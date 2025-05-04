@@ -35,4 +35,10 @@
 
  <h3>Contoh Penggunaan Decision Tree</h3>
  <pre><code>from sklearn.tree import DecisionTreeClassifier
- 
+ X = df[['feature1', 'feature2']]
+y = df['label']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+model = DecisionTreeClassifier(criterion='gini')
+model.fit(X_train, y_train)</code></pre>
+
+</body> </html> ```
