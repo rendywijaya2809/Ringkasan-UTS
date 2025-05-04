@@ -20,22 +20,47 @@
 
   <h3>Contoh Penggunaan Pandas</h3>
   <pre><code>import pandas as pd
-   <h2>2. Matplotlib: Visualisasi Data</h2>
+df = pd.read_csv('data.csv')
+print(df.head())</code></pre>
+
+php-template
+Copy
+Edit
+ <h2>2. Matplotlib: Visualisasi Data</h2>
  <p>Matplotlib adalah pustaka Python untuk membuat grafik 2D yang digunakan untuk visualisasi data.</p>
 
  <h3>Contoh Penggunaan Matplotlib</h3>
  <pre><code>import matplotlib.pyplot as plt
+plt.hist(df['column_name'], bins=10, color='blue')
+plt.title('Distribusi Data')
+plt.xlabel('Nilai')
+plt.ylabel('Frekuensi')
+plt.show()</code></pre>
+
+php-template
+Copy
+Edit
  <h2>3. Naive Bayes: Klasifikasi Probabilistik</h2>
  <p>Naive Bayes adalah algoritma pembelajaran mesin berbasis probabilitas yang digunakan untuk klasifikasi.</p>
 
  <h3>Contoh Penggunaan Naive Bayes</h3>
  <pre><code>from sklearn.naive_bayes import GaussianNB
+from sklearn.model_selection import train_test_split
+X = df[['feature1', 'feature2']]
+y = df['label']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+model = GaussianNB()
+model.fit(X_train, y_train)</code></pre>
+
+php-template
+Copy
+Edit
  <h2>4. Decision Tree: Model Pohon Keputusan</h2>
  <p>Decision Tree adalah algoritma pembelajaran mesin yang digunakan untuk klasifikasi dan regresi dengan membagi data berdasarkan fitur dan menghasilkan pohon keputusan.</p>
 
  <h3>Contoh Penggunaan Decision Tree</h3>
  <pre><code>from sklearn.tree import DecisionTreeClassifier
- X = df[['feature1', 'feature2']]
+X = df[['feature1', 'feature2']]
 y = df['label']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 model = DecisionTreeClassifier(criterion='gini')
