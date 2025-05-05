@@ -39,6 +39,10 @@ le = LabelEncoder()
 data['kategori'] = le.fit_transform(data['kategori'])
 ```
 
+📉 Catatan:
+- Gunakan `LabelEncoder` jika fitur kategorikal hanya memiliki dua nilai atau bersifat ordinal.
+- Gunakan `OneHotEncoder` jika fitur memiliki banyak kategori dan tidak ada urutan antar kategori.
+
 ### d. Analisis Deskriptif:
 Digunakan untuk memahami sebaran data dan hubungan antar variabel.
 ```python
@@ -91,6 +95,11 @@ plt.title('Boxplot Nilai')
 plt.show()
 ```
 
+📉 Tips Visualisasi:
+- Gunakan histogram untuk melihat distribusi satu variabel.
+- Gunakan scatter plot untuk melihat hubungan dua variabel numerik.
+- Gunakan boxplot untuk mendeteksi nilai pencilan (outlier).
+
 ---
 
 ## 3. 🤖 Naive Bayes Classifier
@@ -120,6 +129,14 @@ print('Akurasi:', accuracy_score(y_test, prediksi))
 print(classification_report(y_test, prediksi))
 ```
 
+### b. Jenis Naive Bayes:
+- `GaussianNB`: Untuk fitur numerik dan distribusi normal.
+- `MultinomialNB`: Untuk data jumlah/frekuensi (teks).
+- `BernoulliNB`: Untuk data biner (0/1).
+
+📉 Tips:
+Pastikan fitur numerik tidak memiliki skala yang sangat berbeda (normalisasi bisa diperlukan).
+
 ---
 
 ## 4. 🌳 Decision Tree Classifier
@@ -148,14 +165,29 @@ print(classification_report(y_test, pred_dt))
 Digunakan untuk menghindari overfitting dan meningkatkan akurasi model.
 ```python
 # Maksimal kedalaman pohon
-dt_limited = DecisionTreeClassifier(max_depth=3)
-dt_limited.fit(X_train, y_train)
+from sklearn.model_selection import GridSearchCV
+
+param_grid = {'max_depth': [3, 5, 10], 'min_samples_split': [2, 5, 10]}
+gs = GridSearchCV(DecisionTreeClassifier(), param_grid, cv=5)
+gs.fit(X_train, y_train)
+print('Best Parameters:', gs.best_params_)
 ```
+
+### c. Parameter Penting:
+- `max_depth`: Batas kedalaman pohon
+- `min_samples_split`: Jumlah minimum sampel untuk membagi node
+- `criterion`: 'gini' atau 'entropy' untuk pembagian
 
 ---
 
 ## 📚 Studi Kasus Mini (Opsional untuk Proyek)
 Misalnya, klasifikasi pelanggan berdasarkan perilaku pembelian:
+
+| umur | jenis_kelamin | frekuensi_transaksi | loyalitas |
+|------|----------------|----------------------|------------|
+| 25   | Pria           | 12                   | 1          |
+| 45   | Wanita         | 3                    | 0          |
+
 - **Input**: umur, jenis kelamin, total transaksi
 - **Output**: loyalitas (loyal atau tidak)
 - **Manfaat**: membantu perusahaan menentukan target promosi
@@ -168,20 +200,3 @@ Misalnya, klasifikasi pelanggan berdasarkan perilaku pembelian:
 - **Matplotlib** membantu mengeksplorasi data secara visual, memudahkan deteksi pola dan anomali.
 - **Naive Bayes** cocok untuk klasifikasi sederhana dan cepat, namun tidak kuat jika fitur saling bergantung.
 - **Decision Tree** menawarkan interpretasi visual dan fleksibilitas tinggi, cocok untuk eksplorasi awal dan presentasi hasil.
-
-> 📌 Seluruh kode dan dokumentasi tersedia di GitHub: *(akan disiapkan tautannya setelah repositori dibuat)*
-
----
-
-## 📁 Struktur Repositori yang Direkomendasikan
-Untuk portofolio yang rapi dan profesional:
-
-```
-├── data/            # Berisi dataset (CSV)
-├── notebooks/       # Notebook Jupyter untuk eksplorasi dan eksperimen
-├── src/             # Skrip Python modular
-├── README.md        # Ringkasan dan petunjuk penggunaan
-└── requirements.txt # Daftar pustaka Python
-```
-
----
