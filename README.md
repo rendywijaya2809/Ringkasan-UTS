@@ -1,94 +1,81 @@
-# Ringkasan-UTS
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ringkasan Materi UTS - Data Science</title>
-  <style>
-    body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; max-width: 1000px; margin: auto; }
-    h1, h2 { color: #2c3e50; }
-    h3 { color: #34495e; }
-    pre, code { background-color: #f4f4f4; padding: 10px; display: block; border-radius: 5px; overflow-x: auto; }
-    .section { margin-bottom: 30px; }
-  </style>
-</head>
-<body>
-  <h1>📘 Ringkasan Materi UTS</h1>
-  <p><strong>Mata Kuliah:</strong> Data Science / Pembelajaran Mesin Dasar</p>
-  <p><strong>Topik:</strong> Pandas, Matplotlib, Naive Bayes, Decision Tree</p>
+📊 Data Mining Summary (Pre-UTS)
 
-  <div class="section">
-    <h2>1. Pandas</h2>
-    <p><strong>Pandas</strong> adalah pustaka Python untuk manipulasi dan analisis data berbasis tabel (DataFrame).</p>
-    <h3>Contoh Penggunaan:</h3>
-    <pre><code>import pandas as pd
+Repositori ini berisi ringkasan materi mata kuliah **Data Mining** sebelum Ujian Tengah Semester (UTS), termasuk penggunaan **pandas**, **matplotlib**, serta algoritma klasifikasi seperti **Naive Bayes** dan **Decision Tree**. Cocok untuk referensi belajar cepat dan bisa dijadikan portofolio pembelajaran berbasis data.
+
+## 📚 Daftar Isi
+
+1. [Pengolahan Data dengan Pandas dan Visualisasi dengan Matplotlib](pandas_matplotlib.md)
+2. [Klasifikasi dengan Naive Bayes](naive_bayes.md)
+3. [Klasifikasi dengan Decision Tree](decision_tree.md)
+🧠 Disusun oleh: *[Rendy Wijaya]*  
+🗓️ Terakhir diperbarui: Mei 2025
+# 🐼 Pandas & 📈 Matplotlib: Data Processing dan Visualisasi
+
+## 1. Pandas
+Digunakan untuk membaca, mengelola, dan memproses data. Contoh umum:
+```python
+import pandas as pd
 
 df = pd.read_csv('data.csv')
-print(df.head())
+df.info()
+df.describe()
+df['kategori'].value_counts()
+import matplotlib.pyplot as plt
 
-df['total'] = df['harga'] * df['jumlah']
-filtered = df[df['usia'] > 30]</code></pre>
-  </div>
-
-  <div class="section">
-    <h2>2. Matplotlib</h2>
-    <p><strong>Matplotlib</strong> digunakan untuk membuat visualisasi data seperti grafik garis, histogram, dan diagram batang.</p>
-    <h3>Contoh:</h3>
-    <pre><code>import matplotlib.pyplot as plt
-
-plt.plot(df['tanggal'], df['penjualan'])
-plt.title('Grafik Penjualan')
-plt.xlabel('Tanggal')
+df['umur'].hist(bins=10)
+plt.title('Distribusi Umur')
+plt.xlabel('Umur')
 plt.ylabel('Jumlah')
 plt.show()
 
-plt.hist(df['usia'], bins=10)
-plt.title('Distribusi Usia')
-plt.show()</code></pre>
-  </div>
+## 📄 Contoh Isi File `naive_bayes.md`
+```markdown
+# 📘 Naive Bayes Classifier
 
-  <div class="section">
-    <h2>3. Naive Bayes</h2>
-    <p>Algoritma klasifikasi berbasis probabilitas. Cocok untuk prediksi seperti deteksi spam, klasifikasi teks, dll.</p>
-    <h3>Contoh Penggunaan:</h3>
-    <pre><code>from sklearn.naive_bayes import GaussianNB
+## Apa itu?
+Naive Bayes adalah algoritma klasifikasi berbasis probabilitas (Teorema Bayes) yang mengasumsikan bahwa tiap fitur saling independen.
+
+## Rumus Teorema Bayes
+\[
+P(A|B) = \frac{P(B|A) \cdot P(A)}{P(B)}
+\]
+
+## Implementasi
+```python
+from sklearn.naive_bayes import GaussianNB
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
 X = df[['fitur1', 'fitur2']]
 y = df['label']
+
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
 model = GaussianNB()
 model.fit(X_train, y_train)
-
 y_pred = model.predict(X_test)
-print("Akurasi:", accuracy_score(y_test, y_pred))</code></pre>
-  </div>
 
-  <div class="section">
-    <h2>4. Decision Tree</h2>
-    <p>Model pembelajaran berbasis pohon yang digunakan untuk klasifikasi dan regresi.</p>
-    <h3>Contoh Penggunaan:</h3>
-    <pre><code>from sklearn.tree import DecisionTreeClassifier, plot_tree
+print("Akurasi:", accuracy_score(y_test, y_pred))
+## 📄 Contoh Isi File `decision_tree.md`
+```markdown
+# 🌳 Decision Tree Classifier
 
-model = DecisionTreeClassifier(criterion='entropy')
+## Konsep
+Model yang memetakan keputusan dalam bentuk struktur pohon (if-else berjenjang). Tujuan utamanya adalah membagi dataset menjadi subset berdasarkan fitur tertentu.
+
+## Istilah Kunci
+- Root Node: Awal pohon
+- Leaf Node: Akhir (kelas/label)
+- Gini Index / Entropy: Digunakan untuk menentukan split terbaik
+
+## Contoh Kode
+```python
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.tree import plot_tree
+
+model = DecisionTreeClassifier()
 model.fit(X_train, y_train)
 
-plt.figure(figsize=(10, 8))
-plot_tree(model, filled=True, feature_names=['fitur1', 'fitur2'])
-plt.show()</code></pre>
-  </div>
-
-  <div class="section">
-    <h2>✅ Alur Analisis</h2>
-    <ol>
-      <li>Eksplorasi dan pembersihan data (Pandas)</li>
-      <li>Visualisasi data (Matplotlib)</li>
-      <li>Pelatihan model (Naive Bayes / Decision Tree)</li>
-      <li>Evaluasi hasil dan pengambilan keputusan</li>
-    </ol>
-  </div>
-</body>
-</html>
+plt.figure(figsize=(12,8))
+plot_tree(model, feature_names=X.columns, class_names=True, filled=True)
+plt.show()
