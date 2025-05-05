@@ -1,81 +1,187 @@
-📊 Data Mining Summary (Pre-UTS)
+# 📊 Summary Materi Data Mining Sebelum UTS
 
-Repositori ini berisi ringkasan materi mata kuliah **Data Mining** sebelum Ujian Tengah Semester (UTS), termasuk penggunaan **pandas**, **matplotlib**, serta algoritma klasifikasi seperti **Naive Bayes** dan **Decision Tree**. Cocok untuk referensi belajar cepat dan bisa dijadikan portofolio pembelajaran berbasis data.
+Mata kuliah Data Mining mencakup proses pengolahan dan analisis data menggunakan berbagai teknik dan tools. Dalam materi sebelum UTS, fokus pembahasan mencakup proses persiapan data, eksplorasi visualisasi data, hingga penerapan dua algoritma klasifikasi: Naive Bayes dan Decision Tree. Semua penerapan menggunakan bahasa pemrograman Python dengan pustaka populer seperti `pandas`, `matplotlib`, dan `scikit-learn`.
 
-## 📚 Daftar Isi
+---
 
-1. [Pengolahan Data dengan Pandas dan Visualisasi dengan Matplotlib](pandas_matplotlib.md)
-2. [Klasifikasi dengan Naive Bayes](naive_bayes.md)
-3. [Klasifikasi dengan Decision Tree](decision_tree.md)
-🧠 Disusun oleh: *[Rendy Wijaya]*  
-🗓️ Terakhir diperbarui: Mei 2025
-# 🐼 Pandas & 📈 Matplotlib: Data Processing dan Visualisasi
+## 1. 📁 Persiapan Data dengan Pandas
 
-## 1. Pandas
-Digunakan untuk membaca, mengelola, dan memproses data. Contoh umum:
+Pandas adalah pustaka Python yang dirancang untuk manipulasi dan analisis data. Ia menyediakan struktur data yang fleksibel dan mudah digunakan.
+
+### a. Membaca Data:
+Digunakan untuk mengimpor data dari file eksternal seperti `.csv`, `.xlsx`, atau sumber online.
 ```python
-import pandas as pd
+import pandas as pd 
 
-df = pd.read_csv('data.csv')
-df.info()
-df.describe()
-df['kategori'].value_counts()
+# Membaca dataset CSV
+data = pd.read_csv('data.csv')
+data.head()  # Menampilkan 5 baris pertama
+```
+
+### b. Pembersihan Data:
+Proses ini penting untuk memastikan bahwa data bebas dari nilai kosong, duplikat, atau tipe data yang salah.
+```python
+# Menghapus nilai kosong
+data = data.dropna()
+
+# Menghapus duplikat
+data = data.drop_duplicates()
+
+# Mengubah tipe data kolom tanggal
+data['tanggal'] = pd.to_datetime(data['tanggal'])
+```
+
+### c. Transformasi Data:
+Transformasi data dilakukan agar data dapat digunakan dalam model machine learning, seperti encoding untuk data kategorikal.
+```python
+from sklearn.preprocessing import LabelEncoder
+le = LabelEncoder()
+data['kategori'] = le.fit_transform(data['kategori'])
+```
+
+### d. Analisis Deskriptif:
+Digunakan untuk memahami sebaran data dan hubungan antar variabel.
+```python
+# Statistik deskriptif
+data.describe()
+
+# Korelasi antar variabel
+data.corr()
+```
+
+---
+
+## 2. 📈 Visualisasi Data dengan Matplotlib
+
+Matplotlib adalah pustaka visualisasi yang umum digunakan untuk membuat grafik statis, animasi, dan interaktif dalam Python.
+
+### a. Plot Dasar:
+```python
 import matplotlib.pyplot as plt
 
-df['umur'].hist(bins=10)
-plt.title('Distribusi Umur')
-plt.xlabel('Umur')
-plt.ylabel('Jumlah')
+# Histogram
+plt.hist(data['nilai'], bins=10)
+plt.title('Distribusi Nilai')
+plt.xlabel('Nilai')
+plt.ylabel('Frekuensi')
+plt.show()
+```
+
+### b. Scatter dan Line Plot:
+```python
+# Scatter plot
+plt.scatter(data['x'], data['y'])
+plt.title('Plot X vs Y')
+plt.xlabel('X')
+plt.ylabel('Y')
 plt.show()
 
-## 📄 Contoh Isi File `naive_bayes.md`
-```markdown
-# 📘 Naive Bayes Classifier
+# Line plot
+plt.plot(data['tanggal'], data['nilai'])
+plt.title('Perubahan Nilai per Tanggal')
+plt.xticks(rotation=45)
+plt.show()
+```
 
-## Apa itu?
-Naive Bayes adalah algoritma klasifikasi berbasis probabilitas (Teorema Bayes) yang mengasumsikan bahwa tiap fitur saling independen.
-
-## Rumus Teorema Bayes
-\[
-P(A|B) = \frac{P(B|A) \cdot P(A)}{P(B)}
-\]
-
-## Implementasi
+### c. Boxplot:
+Boxplot digunakan untuk melihat distribusi nilai dan outlier.
 ```python
-from sklearn.naive_bayes import GaussianNB
+plt.boxplot(data['nilai'])
+plt.title('Boxplot Nilai')
+plt.show()
+```
+
+---
+
+## 3. 🤖 Naive Bayes Classifier
+
+Naive Bayes adalah algoritma klasifikasi probabilistik berdasarkan Teorema Bayes dengan asumsi bahwa fitur input saling bebas (independen). Keunggulan Naive Bayes adalah kecepatannya dan efisiensi pada data besar.
+
+### a. Implementasi Model:
+```python
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import accuracy_score, classification_report
 
-X = df[['fitur1', 'fitur2']]
-y = df['label']
+# Pisahkan fitur dan target
+X = data.drop('target', axis=1)
+y = data['target']
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+# Bagi data menjadi data latih dan uji
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
+# Melatih model
 model = GaussianNB()
 model.fit(X_train, y_train)
-y_pred = model.predict(X_test)
 
-print("Akurasi:", accuracy_score(y_test, y_pred))
-## 📄 Contoh Isi File `decision_tree.md`
-```markdown
-# 🌳 Decision Tree Classifier
+# Prediksi dan evaluasi
+prediksi = model.predict(X_test)
+print('Akurasi:', accuracy_score(y_test, prediksi))
+print(classification_report(y_test, prediksi))
+```
 
-## Konsep
-Model yang memetakan keputusan dalam bentuk struktur pohon (if-else berjenjang). Tujuan utamanya adalah membagi dataset menjadi subset berdasarkan fitur tertentu.
+---
 
-## Istilah Kunci
-- Root Node: Awal pohon
-- Leaf Node: Akhir (kelas/label)
-- Gini Index / Entropy: Digunakan untuk menentukan split terbaik
+## 4. 🌳 Decision Tree Classifier
 
-## Contoh Kode
+Decision Tree adalah algoritma klasifikasi berbasis pohon yang bekerja dengan membagi dataset menjadi subset berdasarkan fitur input. Decision Tree sangat mudah diinterpretasikan karena hasilnya dapat divisualisasikan.
+
+### a. Visualisasi dan Evaluasi Model:
 ```python
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.tree import plot_tree
+from sklearn.tree import DecisionTreeClassifier, plot_tree
 
-model = DecisionTreeClassifier()
-model.fit(X_train, y_train)
+clf = DecisionTreeClassifier(random_state=42)
+clf.fit(X_train, y_train)
 
+# Visualisasi pohon keputusan
 plt.figure(figsize=(12,8))
-plot_tree(model, feature_names=X.columns, class_names=True, filled=True)
+plot_tree(clf, filled=True, feature_names=X.columns, class_names=['0','1'])
 plt.show()
+
+# Evaluasi
+pred_dt = clf.predict(X_test)
+print('Akurasi Decision Tree:', accuracy_score(y_test, pred_dt))
+print(classification_report(y_test, pred_dt))
+```
+
+### b. Hyperparameter Tuning:
+Digunakan untuk menghindari overfitting dan meningkatkan akurasi model.
+```python
+# Maksimal kedalaman pohon
+dt_limited = DecisionTreeClassifier(max_depth=3)
+dt_limited.fit(X_train, y_train)
+```
+
+---
+
+## 📚 Studi Kasus Mini (Opsional untuk Proyek)
+Misalnya, klasifikasi pelanggan berdasarkan perilaku pembelian:
+- **Input**: umur, jenis kelamin, total transaksi
+- **Output**: loyalitas (loyal atau tidak)
+- **Manfaat**: membantu perusahaan menentukan target promosi
+- **Tools**: pandas, matplotlib, scikit-learn (Naive Bayes atau Decision Tree)
+
+---
+
+## ✨ Kesimpulan
+- **Pandas** digunakan untuk manipulasi dan pembersihan data sebelum pemodelan.
+- **Matplotlib** membantu mengeksplorasi data secara visual, memudahkan deteksi pola dan anomali.
+- **Naive Bayes** cocok untuk klasifikasi sederhana dan cepat, namun tidak kuat jika fitur saling bergantung.
+- **Decision Tree** menawarkan interpretasi visual dan fleksibilitas tinggi, cocok untuk eksplorasi awal dan presentasi hasil.
+
+> 📌 Seluruh kode dan dokumentasi tersedia di GitHub: *(akan disiapkan tautannya setelah repositori dibuat)*
+
+---
+
+## 📁 Struktur Repositori yang Direkomendasikan
+Untuk portofolio yang rapi dan profesional:
+
+```
+├── data/            # Berisi dataset (CSV)
+├── notebooks/       # Notebook Jupyter untuk eksplorasi dan eksperimen
+├── src/             # Skrip Python modular
+├── README.md        # Ringkasan dan petunjuk penggunaan
+└── requirements.txt # Daftar pustaka Python
+```
+
+---
